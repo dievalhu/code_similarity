@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<!--SI EXISTEN EMPLEADOS APARECEN-->
+{% if archivos %}
+
+    <table class="table table-light">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre de Archivo</th>
+                <th>Eliminar</th>
+                <th>Descargar</th>
+                <th>Ver Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ar in archivos %}
+            <tr>
+                <td>{{ar}}</td>
+                
+                <td>
+                    <form action="/eliminarArchivoResultado" method="post">
+                        <input  name="dir" type="hidden" value="{{ruta}}">
+                        <input  name="ar" type="hidden" value="{{ar}}">
+                        <input type="submit" value="Eliminar" class="btn btn-danger" onclick="return confirm('¿Desea borrar el archivo?')">
+                    </form> 
+                </td>
+                <td>
+                    <form action="/download" method="post">
+                        <input  name="dir" type="hidden" value="{{ruta}}">
+                        <input  name="ar" type="hidden" value="{{ar}}">
+                        <input type="submit" value="Descargar" class="btn btn-success">
+                    </form> 
+                </td>
+                <td>
+                    <form action="/verResultadoDataFrame" method="post">
+                        <input  name="dir" type="hidden" value="{{ruta}}">
+                        <input  name="ar" type="hidden" value="{{ar}}">
+                        <input type="submit" value="Ver" class="btn btn-success">
+                    </form> 
+                </td>
+            </tr>    
+            {% endfor %}
+            
+        
+        </tbody>
+    </table>
+
+    {% endif %}
+
+{% endblock %}

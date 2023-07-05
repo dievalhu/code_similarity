@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<!--
+<h1>Subir un archivo</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+    <input type="file" name="ourfile" required="True">
+    <input type="submit" value="UPLOAD">
+</form>
+-->
+<hr> 
+<h1>Crear nuevo proyecto</h1>
+<form action="/subirArchivos" method="post" enctype="multipart/form-data">
+    <h2>Subir archivos</h2> <input type="file" name="myfiles" multiple>
+    <br>
+    <h3>Nombre del proyecto</h3> <input type="text" name="nombreProyecto" required placeholder="Nombre proyecto"/>
+    <br> <br>
+    <input type="submit" value="Guardar" class="btn btn-success">
+</form>
+
+<hr>
+<h1>Proyectos</h1>
+<!--SI EXISTEN EMPLEADOS APARECEN-->
+{% if directorios %}
+
+    <table class="table table-light">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre de Proyecto</th>
+                <th>OPCIONES</th>
+                <th>Calcular Similitud</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dir in directorios %}
+            <tr>
+                <td>{{dir}}</td>
+                
+                <td>
+                    <a href="/archivos/{{dir}}" class="btn btn-warning">
+                        Ver Archivos
+                    </a> 
+
+                    <!--
+                    <form action="/archivos" method="post">
+                        <input  name="ruta" type="hidden" value="{{ruta}}">
+                        <input  name="dir" type="hidden" value="{{dir}}">
+                        <input type="submit" value="Ver Archivos" class="btn btn-warning">
+                    </form>
+                    -->
+                    
+                    <form action="/eliminarDirectorio" method="post">
+                        <input  name="ruta" type="hidden" value="{{ruta}}">
+                        <input  name="dir" type="hidden" value="{{dir}}">
+                        <input type="submit" value="Eliminar" class="btn btn-danger" onclick="return confirm('¿Desea borrar el proyecto?')">
+                    </form>
+                    
+                     
+                </td>
+                <td>
+                    <form action="/calcularSimilitud" method="post">
+                        <input  name="ruta" type="hidden" value="{{ruta}}">
+                        <input  name="dir" type="hidden" value="{{dir}}">
+                        <input type="submit" value="Calcular Similitud" class="btn btn-success" >
+                    </form>
+                </td
+            </tr>    
+            {% endfor %}
+            
+        
+        </tbody>
+    </table>
+
+    {% endif %}
+
+
+{% endblock %}

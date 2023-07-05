@@ -1,0 +1,35 @@
+<!--SI EXISTEN EMPLEADOS APARECEN-->
+{% if directorios %}
+
+    <table class="table table-light">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre de Proyecto</th>
+                <th>OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dir in directorios %}
+            <tr>
+                <td>{{dir}}</td>
+                
+                <td>
+                    <a href="" class="btn btn-warning">
+                        Ver Archivos
+                    </a> 
+                    | 
+                    <!--Agregar la parte del mensaje
+                    Que si desea borrar seguro con onclick
+                    return confirm('Mensaje')-->
+                    <a onclick="return confirm('¿Desea borrar al empleado?')" href="" class="btn btn-danger">
+                        Eliminar 
+                    </a>    
+                </td>
+            </tr>    
+            {% endfor %}
+            
+        
+        </tbody>
+    </table>
+
+    {% endif %}

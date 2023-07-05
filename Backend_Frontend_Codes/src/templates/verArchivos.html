@@ -1,0 +1,36 @@
+{% extends 'layout2.html' %}
+
+{% block body %}
+
+<!--SI EXISTEN EMPLEADOS APARECEN-->
+{% if archivos %}
+
+    <table class="table table-light">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre de Archivo</th>
+                <th>OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ar in archivos %}
+            <tr>
+                <td>{{ar}}</td>
+                
+                <td>
+                    <form action="/eliminarArchivo" method="post">
+                        <input  name="dir" type="hidden" value="{{dir}}">
+                        <input  name="ar" type="hidden" value="{{ar}}">
+                        <input type="submit" value="Eliminar" class="btn btn-danger" onclick="return confirm('¿Desea borrar el archivo?')">
+                    </form> 
+                </td>
+            </tr>    
+            {% endfor %}
+            
+        
+        </tbody>
+    </table>
+
+    {% endif %}
+
+{% endblock %}

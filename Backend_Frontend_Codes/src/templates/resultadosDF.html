@@ -1,0 +1,249 @@
+
+{% extends 'layout.html' %}
+
+
+{% block body %}
+
+<style>
+
+    body{
+        font-family: 'Roboto', sans-serif;    
+    }
+   
+    #opciones1{
+        display: inline-block;
+        margin-left: 30px;
+    }
+    #opciones2{
+        display: inline-block;
+        margin-left: 30px;
+    }
+    #opciones3{
+        display: inline-block;
+        margin-left: 30px;
+    }
+
+    #boton{
+        margin-left: 690px;
+    }
+    table{
+        text-align: center;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+
+    th, td{
+        border: solid 1px black;
+        padding: 20px;
+    }
+
+
+    ._100{
+        background: rgba(149, 74, 34, 1);
+        color: white;
+    }
+    ._90_100{
+        background: rgba(108, 74, 34, 0.8);
+        color: white;
+    }
+
+    ._80_90{
+        background: rgba(90, 74, 34, 0.7);
+        color: black;
+    }
+
+    ._70_80{
+        background: rgba(70, 74, 34, 0.6);
+        color: black;
+    }
+
+    ._50_70{
+        background: rgba(50, 74, 34, 0.5);
+        color: black;
+    }
+
+    ._30_50{
+        background: rgba(36, 74, 34, 0.4);
+        color: black;
+    }
+
+    ._10_30{
+        background: rgba(36, 74, 34, 0.2);
+        color: black;
+    }
+
+    ._0_10{
+        background: rgba(36, 74, 34, 0.05);
+        color: black;
+    }
+
+    .string{
+        background-color: #222222;
+        color: white;
+    }
+
+    thead{
+        background-color: #222222;
+        border-bottom: solid 5px #222222;
+        color: white;
+    }
+
+
+
+
+
+</style>
+
+
+
+<br>
+
+<h3>Códigos sobre el {{porciento}}% de similitud</h3>
+
+
+<div id="main-container">
+<table>
+    <thead>
+        <td>
+            <b>Archivo 1</b>          
+        </td>
+        <td>
+            <b>Archivo 2</b>          
+        </td>
+        <td>
+            <b>Similitud</b>          
+        </td>
+    </thead>
+    <tbody>
+        {%if listaPor%}
+            {%for item in listaPor%}
+            <tr>
+                <td>
+                    <b><i>{{item[0]}}</i></b>
+                </td>
+                <td>
+                    <b><i>{{item[1]}}</i></b>
+                </td>
+                <td>
+                    <b>{{item[2]}}%</b>
+                </td>
+            </tr>
+            {%endfor%}
+        {%endif%}
+    </tbody>
+</table>
+</div>
+
+<form action="/filtroSimilitud" method="post">
+    <!--
+    <div class="form-outline" style="width: 22rem;">
+        <input value="50" type="number" name="por" id="typeNumber" class="form-control" min=10 max=100/>
+        <label class="form-label" for="typeNumber">Porcentaje sobre</label>
+    </div>
+    -->
+
+
+
+    <input name="por" type="range" min="0" max="100" step="1" value="{{porciento}}" style="width: 100%; height: 20px; -webkit-appearance: none; background-color: #ddd; outline: none; margin-top: 10px;">
+    <span id="range-value" style="display: block; text-align: center; margin-top: 10px;">{{porciento}}%</span>
+    
+    <script>
+    var range = document.querySelector('input[type=range]');
+    var rangeValue = document.querySelector('#range-value');
+    
+    range.addEventListener('input', function() {
+      var value = range.value;
+      var percent = value + '%';
+      rangeValue.textContent = percent;
+    });
+    </script>
+
+
+    <input type="submit" value="Filtrar" class="btn btn-success" >
+</form>
+<br>
+
+
+
+<h1>Matriz de Similitudes</h1>
+<h3>Códigos</h3>
+<div id="main-container">
+<table>
+    <thead>
+        <tr>
+            {% for nombre in encabezado2[1:] %}
+            <td>                
+                {{ nombre }}
+            </td>
+            {% endfor %}           
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            {% for nombre in encabezado[1:] %}
+            <td>                
+                <b><i>{{ nombre }}</i></b>
+            </td>
+            {% endfor %}   
+        </tr>
+       
+    </tbody>
+</table>
+</div>
+<br>
+
+
+<table>
+    <thead>
+        <tr>
+            {% for nombre in encabezado2 %}
+            <td>
+                {{ nombre }}
+            </td>
+            {% endfor %}           
+        </tr>
+    </thead>
+    <tbody>
+        {% for fila in matriz %}
+        <tr>
+            {% for valor in fila %}
+                {%if valor is number%}
+                   {% if valor >= 0.9999 %}
+                        <td class="_100 t">{{ valor}}</td>
+                    {% elif valor >= 0.9 %}
+                        <td class="_90_100 t">{{ valor}}</td>
+                    {% elif valor >= 0.80 %}
+                        <td class="_80_90 t">{{ valor}}</td>
+                    {% elif valor >= 0.70 %}
+                        <td class="_70_80 t">{{ valor}}</td>
+                    {% elif valor >= 0.50 %}
+                        <td class="_50_70 t">{{ valor}}</td>
+                    {% elif valor >= 0.30 %}
+                        <td class="_30_50 t">{{ valor}}</td>
+                    {% elif valor >= 0.10 %}
+                        <td class="_10_30 t">{{ valor}}</td>
+                    {% elif valor >= 0 %}
+                        <td class="_0_10 t">{{ valor}}</td>
+                {%endif%}
+                   
+                {%elif valor is string%}
+                    <td class="string">{{ valor}}</td>
+                {%endif%}
+            {% endfor %}
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+{% endblock %}
